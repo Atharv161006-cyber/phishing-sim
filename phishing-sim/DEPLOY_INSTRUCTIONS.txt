@@ -1,0 +1,71 @@
+HOW TO DEPLOY — Phishing Awareness Simulation (Member 2 build)
+================================================================
+
+PART A — Set up the logging backend (Google Apps Script)
+----------------------------------------------------------
+1. Go to sheets.google.com -> create a new blank Google Sheet.
+   Rename it something like "Phishing Sim Log".
+
+2. In the sheet: Extensions -> Apps Script.
+
+3. Delete the default code in the editor, and paste in the
+   contents of apps_script.gs (included in this folder).
+
+4. Click Deploy -> New deployment.
+   - Click the gear icon next to "Select type" -> choose "Web app".
+   - Description: "phishing sim logger"
+   - Execute as: Me
+   - Who has access: Anyone
+   - Click Deploy.
+
+5. Authorize the script when prompted (it's your own script, so
+   click Advanced -> Go to project (unsafe) -> Allow). This warning
+   appears because it's a new unverified script, not because
+   anything is wrong.
+
+6. Copy the "Web app URL" it gives you — looks like:
+   https://script.google.com/macros/s/XXXXXXXX/exec
+
+PART B — Wire the URL into the HTML page
+-------------------------------------------
+1. Open index.html in a text editor.
+2. Find this line near the bottom:
+     const ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+3. Replace the placeholder text with the Web app URL from Part A step 6.
+4. Save the file.
+
+PART C — Host the page so classmates can open it
+----------------------------------------------------
+Options, easiest first:
+  1. GitHub Pages (free, simple):
+     - Create a public GitHub repo, upload index.html.
+     - Settings -> Pages -> enable Pages from main branch.
+     - You'll get a URL like https://yourname.github.io/repo/
+
+  2. Netlify Drop (netlify.com/drop):
+     - Drag the folder containing index.html onto the page.
+     - Get an instant live URL, no account needed for a quick test.
+
+  3. Or just run it locally and share via your college's LAN/wifi
+     for an in-classroom test.
+
+PART D — Personalize links per participant (optional but recommended)
+--------------------------------------------------------------------
+Add ?id=NAME to the end of the URL you send each person, e.g.:
+  https://yourname.github.io/repo/?id=rohan
+  https://yourname.github.io/repo/?id=priya
+
+This lets the Sheet log show WHO clicked / submitted, so Member 3 can
+calculate click-rate and report-rate per person. Only do this with
+participants who've already given informed consent.
+
+PART E — What gets logged
+------------------------------
+The Sheet will show three columns: Timestamp, Participant ID, Event.
+Event will be either:
+  - link_opened          -> they opened the page
+  - credentials_submitted -> they filled the form and hit submit
+
+The actual password text is NEVER read or sent anywhere — check
+index.html, the submit handler intentionally skips reading the
+password field's value before logging.
