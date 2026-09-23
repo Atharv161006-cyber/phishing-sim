@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Portal - Password Reset</title>
+<style>
+  :root {
+    --portal-blue: #1a3d6d;
+    --portal-blue-dark: #12294b;
+    --accent: #2f6fed;
+    --bg: #eef1f6;
+    --card-bg: #ffffff;
+    --text: #1c2430;
+    --text-muted: #5b6472;
+    --border: #d7dce3;
+    --danger: #c0392b;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: var(--portal-blue);
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  header .logo-badge {
+    width: 30px;
+    height: 30px;
+    background: white;
+    color: var(--portal-blue);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  header .site-name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    max-width: 380px;
+    width: 100%;
+    padding: 32px 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .card h1 {
+    font-size: 19px;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .card p.subtitle {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin: 0 0 22px;
+    line-height: 1.5;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text);
+  }
+
+  .field input {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+
+  .field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(47,111,237,0.15);
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+
+  .submit-btn:hover { background: #2559c7; }
+
+  .urgency-note {
+    background: #fdf3ee;
+    border: 1px solid #f0c9ba;
+    color: var(--danger);
+    font-size: 12.5px;
+    padding: 9px 11px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    padding: 16px;
+  }
+
+  /* Debrief screen */
+  .debrief {
+    display: none;
+  }
+  .debrief.active { display: block; }
+  .reset-form.hidden { display: none; }
+
+  .debrief-card {
+    max-width: 480px;
+  }
+
+  .debrief h1 {
+    color: var(--danger);
+    font-size: 20px;
+  }
+
+  .debrief ul {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.7;
+    padding-left: 18px;
+    margin: 14px 0 0;
+  }
+
+  .flag {
+    display: inline-block;
+    background: #fdecea;
+    color: var(--danger);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-badge">CP</div>
+  <div class="site-name">Campus Portal</div>
+</header>
+
+<main>
+  <div class="card reset-form" id="resetForm">
+    <h1>Reset your password</h1>
+    <p class="subtitle">We detected unusual sign-in activity on your account. Reset your password now to keep it secure.</p>
+
+    <div class="urgency-note">
+      Your access will be suspended in 24 hours unless this is completed.
+    </div>
+
+    <form id="phishForm">
+      <div class="field">
+        <label for="email">College Email</label>
+        <input type="email" id="email" placeholder="you@campusportal.edu" required>
+      </div>
+      <div class="field">
+        <label for="password">New Password</label>
+        <input type="password" id="password" placeholder="Enter new password" required>
+      </div>
+      <div class="field">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" id="confirm" placeholder="Re-enter new password" required>
+      </div>
+      <button type="submit" class="submit-btn">Reset Password</button>
+    </form>
+  </div>
+
+  <div class="card debrief debrief-card" id="debrief">
+    <span class="flag">SIMULATION</span>
+    <h1>This was a phishing awareness test</h1>
+    <p class="subtitle">
+      No password was collected or stored. This page was part of a supervised
+      cybersecurity awareness exercise you consented to.
+    </p>
+    <ul>
+      <li>Real password-reset requests rarely threaten "24 hour suspension."</li>
+      <li>Check the actual URL/domain before entering credentials anywhere.</li>
+      <li>When in doubt, go to the site directly instead of clicking a link.</li>
+      <li>Report suspicious emails to your IT/security team instead of acting on them.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  This is an educational simulation for a college cybersecurity project — no real data is stored.
+</footer>
+
+<script>
+  // === Ethical logging: only event flags + timestamp, NEVER the password text ===
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbwOq2vwgMm2NhqdQQO9J6RNL0JyTiKHiAqvBcSrhIUBPqdW1Ib_x0nI-NH18HIgua_95A/exec";
+
+  // Simple participant id: last part of URL query string, e.g. ?id=classmate1
+  const params = new URLSearchParams(window.location.search);
+  const participantId = params.get("id") || "anonymous";
+
+  function logEvent(eventName) {
+    if (!ENDPOINT || ENDPOINT.startsWith("PASTE_")) {
+      console.log("[sim log - endpoint not configured]", eventName, participantId);
+      return;
+    }
+    fetch(ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ participantId, event: eventName })
+    }).catch(() => {});
+  }
+
+  // Log that the link was opened
+  logEvent("link_opened");
+
+  document.getElementById("phishForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // We deliberately do NOT read or send the password field's value.
+    logEvent("credentials_submitted");
+
+    document.getElementById("resetForm").classList.add("hidden");
+    document.getElementById("debrief").classList.add("active");
+  });
+</script>
+
+</body>
+</html>
